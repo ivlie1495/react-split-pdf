@@ -19,7 +19,7 @@ interface Props {
 }
 
 const PDFViewer = ({ pdfUrl }: Props) => {
-  const [numPages, setNumPages] = useState<number>()
+  const [numPages, setNumPages] = useState<number>(0)
   const [pageNumber, setPageNumber] = useState<number>(1)
 
   if (!pdfUrl) {
