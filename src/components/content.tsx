@@ -1,5 +1,4 @@
 import { Plus, Trash2 } from 'lucide-react'
-import { useState } from 'react'
 import { PDFDocument } from 'pdf-lib'
 
 import PDFViewer from '@/components/pdf-viewer'
@@ -8,46 +7,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 
-interface SplitConfig {
-  start: string
-  end: string
-  fileName: string
-}
+import useFile from '@/hooks/use-file'
+import useSplitConfigs from '@/hooks/use-split-configs'
 
 const Content = () => {
-  const [file, setFile] = useState<File | null>(null)
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
-  const [splitConfigs, setSplitConfigs] = useState<SplitConfig[]>([
-    { start: '', end: '', fileName: '' },
-  ])
-
-  const addSplitConfig = () => {
-    setSplitConfigs([...splitConfigs, { start: '', end: '', fileName: '' }])
-  }
-
-  const removeSplitConfig = (index: number) => {
-    setSplitConfigs(splitConfigs.filter((_, i) => i !== index))
-  }
-
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0]
-    if (selectedFile) {
-      setFile(selectedFile)
-
-      const url = URL.createObjectURL(selectedFile)
-      setPdfUrl(url)
-    }
-  }
-
-  const updateSplitConfig = (
-    index: number,
-    field: keyof SplitConfig,
-    value: string
-  ) => {
-    const newConfigs = [...splitConfigs]
-    newConfigs[index][field] = value
-    setSplitConfigs(newConfigs)
-  }
+  const { file, pdfUrl, onFileChange } = useFile()
+  const { addSplitConfig, removeSplitConfig, updateSplitConfig, splitConfigs } =
+    useSplitConfigs()
 
   const onSplitClick = async () => {
     if (
